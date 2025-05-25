@@ -1,0 +1,118 @@
+.panel-admin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  transition: background-color 0.3s ease;
+  
+}
+
+.menu {
+  height: 100%;
+  position: fixed;
+  width: 320px;
+  top: 0;
+  left: -320px;
+  background-color: #1dc6c3c6;
+  overflow-y: auto;
+  transition: left 0.5s ease;
+  padding-top: 60px;
+  box-shadow: 4px 0px 6px rgba(152, 92, 92, 0.1);
+  max-height: 100vh;
+}
+
+.menu-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.foto-perfil {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  margin-bottom: 10px;
+}
+
+.menu-items {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 20px;
+}
+
+.menu-items button {
+  padding: 14px 25px;
+  margin: 12px 0;
+  background-color: #1dc6c3c6;
+  color: white;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.547);
+}
+
+.menu-items button i {
+  margin-right: 15px;
+  font-size: 20px;
+}
+
+.menu-items button:hover {
+  background-color: #004c8c;
+  transform: translateX(5px);
+}
+
+.menu-btn {
+  background-color: #1dc6c3c6;
+  color: white;
+  font-size: 30px;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  border-radius: 50%;
+  z-index: 2;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.menu-btn:hover {
+  background-color: #4f5b99;
+  transform: rotate(45deg);
+}
+
+.contenido {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Centra verticalmente */
+  
+  padding: 20px 30px;
+  margin-left: 0px;
+  transition: margin-left 0.5s ease;
+  color: #444;
+
+  background-image: url('../assets/img/pexels-katianaidenko-7512139.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  min-height: 100vh;
+  width: 100%;
+  text-align: center; /* Centra el texto dentro de los paneles */
+  transition: margin-left 0.5 ease;
+}

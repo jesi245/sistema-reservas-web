@@ -11,3 +11,9 @@ export const buscarHoteles = async (filtros) => {
     return [];
   }
 };
+
+export const obtenerHotelPorId = async (id) => {
+  const response = await axios.get(`${API_URL}/${id}`);
+  return response.data;
+};
+

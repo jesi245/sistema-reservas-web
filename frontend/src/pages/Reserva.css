@@ -1,0 +1,121 @@
+.login-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  
+}
+
+body, html {
+    margin: 0;
+}
+
+/* Izquierda: imagen */
+.login-left {
+  width: 50%;
+  height: 100%;
+}
+
+.login-left img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Derecha: color de fondo */
+.login-right {
+  width: 50%;
+  background-color: #1dc6c3c6;
+  height: 100%;
+}
+
+/* Formulario flotante centrado */
+.login-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  width: 90%;
+  max-width: 400px;
+  text-align: center;
+  z-index: 10;
+  height: 100vh;
+}
+
+.login-form h2 {
+  font-size: 28px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.login-form .precio {
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #555;
+}
+
+.login-form form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
+}
+
+.login-form input {
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.login-form label {
+  text-align: left;
+  font-size: 14px;
+  color: #444;
+  margin-top: 10px;
+}
+
+.login-form button[type="submit"] {
+  margin-top: 10px;
+  padding: 12px;
+  background-color: #1dc6c3c6;
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.login-form button[type="submit"]:hover {
+  background-color: #1dc6c3c6;
+}
+
+.login-form .cuenta {
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.login-form .cuenta a {
+  color: #1dc6c3c6;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.btn-registrarse {
+  margin-top: 8px;
+  padding: 10px 15px;
+  font-size: 14px;
+  background-color: #1dc6c3c6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-registrarse:hover {
+  background-color: #1dc6c3c6;
+}

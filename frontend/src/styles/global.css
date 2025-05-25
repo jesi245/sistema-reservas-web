@@ -4,11 +4,25 @@
   box-sizing: border-box;
 }
 
-body {
+/*body {
   font-family: 'Roboto', sans-serif;
   background-color: var(--color-fondo);
   color: var(--color-texto);
+}*/
+
+.background-image {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: url('../assets/img/pexels-quark-studio-1159039-2507010.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1; 
 }
+
 
 .form-container {
   max-width: 600px;
@@ -27,7 +41,7 @@ body {
   color: var(--color-principal);
 }
 
-form input,
+/*form input,
 form textarea {
   width: 100%;
   padding: 12px;
@@ -49,5 +63,5 @@ form button {
 }
 
 form button:hover {
-  background-color: #1c6dd0; /* un tono más oscuro del color principal */
-}
+  background-color: #1c6dd0; 
+}*/

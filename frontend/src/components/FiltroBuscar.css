@@ -1,0 +1,83 @@
+.data-box {
+    position: absolute;
+    top: 50%; /* Centrado vertical */
+    left: 50%; /* Centrado horizontal */
+    transform: translate(-50%, -50%);
+    background-color: hsla(191, 82%, 41%, 0.8); /* Fondo semi-transparente */
+    color: white;
+    padding: 6rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    z-index: 2; /* Asegura que la caja esté por encima del video */
+    width: 90%; /* Ajusta el tamaño de la caja */
+    max-width: 400px;
+    margin-top: 3rem;
+}
+
+.data-box h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.data-box p {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+}
+
+.data-box input {
+    width: 100%; /* El campo de búsqueda ocupa el 100% del ancho de la caja */
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo claro con algo de transparencia */
+    color: #333; /* Color de texto oscuro para mayor contraste */
+    outline: none;
+}
+
+.data-box input::placeholder {
+    color: #888; /* Color del texto del placeholder */
+}
+
+.data-box input:focus {
+    background-color: rgba(255, 255, 255, 1); /* Fondo blanco cuando el campo esté enfocado */
+}
+
+.data-box label {
+    display: block;
+    text-align: left;
+    margin-top: 1rem;
+    font-size: 1.3rem;
+}
+
+.data-box select,
+.data-box input[type="date"],
+.data-box .btn {
+    width: 100%;
+    padding: 0.8rem;
+    margin-top: 0.5rem;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.data-box select,
+.data-box input[type="date"] {
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #333;
+    outline: none;
+}
+
+.data-box .btn {
+    background-color: #62c9ee;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    margin-top: 1.5rem;
+    
+}
+
+.data-box .btn:hover {
+    background-color: #ffffff;
+}

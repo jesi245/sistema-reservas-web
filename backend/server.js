@@ -12,8 +12,19 @@ app.use(express.json());
 
 connectDB();
 
+const authRoutes = require('./routes/auth'); 
+const reservaRoutes = require('./routes/reservasRoute');
+
+
+
 // 🔗 Nueva ruta de búsqueda
-app.use('/api/hoteles', require('./routes/hoteles.routes'));
+app.use('/api/hoteles', require('./routes/hotelesRoutes'));
+
+// ✅ Ruta de autenticación
+app.use('/api/auth', authRoutes);
+
+app.use('/api/reservas', reservaRoutes);
+
 
 app.get('/', (req, res) => {
   res.send('API del sistema de reservas funcionando 🚀');

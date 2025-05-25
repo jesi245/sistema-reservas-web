@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+/*import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { buscarHoteles } from '../services/hotelService';
 
@@ -94,7 +94,7 @@ const Resultados = () => {
                     cursor: 'pointer'
                   }}
                   onClick={() => {
-                    window.location.href = `/checkin/${hotel._id}`;
+                    window.location.href = `/api/reservas/${hotel._id}`;
                   }}
                 >
                   Reservar
@@ -108,5 +108,105 @@ const Resultados = () => {
   );
 };
 
+export default Resultados;*/
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { buscarHoteles } from '../services/hotelService';
+import './Resultados.css'; 
+
+
+  
+const Resultados = () => {
+  const location = useLocation();
+  const [resultados, setResultados] = useState([]);
+
+  const obtenerParametros = () => {
+    const params = new URLSearchParams(location.search);
+    return {
+      ciudad: params.get('ciudad')?.toLowerCase() || '',
+      tipo: params.get('tipo')?.toLowerCase() || '',
+      fechaEntrada: params.get('fechaEntrada') || '',
+      fechaSalida: params.get('fechaSalida') || ''
+    };
+    
+  };
+
+  useEffect(() => {
+    const fetchResultados = async () => {
+      const filtros = obtenerParametros();
+      try {
+        const data = await buscarHoteles(filtros);
+        setResultados(data);
+      } catch (error) {
+        console.error('Error al buscar hoteles:', error);
+      }
+    };
+
+    fetchResultados();
+  }, [location.search]);
+
+  return (
+    <>
+      
+      <section className='packages' id='packages'>
+      <h1 style={{ textAlign: 'center', color: '#333', marginBottom: '2rem' }}>
+        Resultados de búsqueda
+      </h1>
+
+      {resultados.length === 0 ? (
+        <p style={{ textAlign: 'center' }}>No se encontraron alojamientos.</p>
+      ) : (
+        <div className="box-container">
+          {resultados.map((hotel) => (
+            <div className="box" key={hotel._id}>
+              <img
+                src={
+                  hotel.fotos && hotel.fotos.length > 0
+                    ? hotel.fotos[0]
+                    : 'https://via.placeholder.com/400x200'
+                }
+                alt={hotel.nombre}
+              />
+              <div className="content">
+                <h3>
+                  <i className="fas fa-map-marker-alt"></i> {hotel.nombre}
+                </h3>
+                <p>{hotel.descripcion}</p>
+                <p>
+                  <strong>Servicios:</strong>{' '}
+                  {hotel.servicios?.join(', ') || 'No especificado'}
+                </p>
+
+                <div className="stars">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <i key={star} className="fas fa-star" style={{ color: '#ffa500' }}></i>
+                  ))}
+                </div>
+                <p>
+                  Valoración: <span className="valoracionSeleccionada">0</span> estrellas
+                </p>
+
+                <div className="price">
+                  ${hotel.precioPorNoche.toLocaleString()} <span>$</span>
+                </div>
+                <button
+                  className="btn"
+                  onClick={() => {
+                    window.location.href = `/api/reservas/${hotel._id}`;
+                  }}
+                >
+                  Reservar
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      </section>
+    </>
+  );
+};
+
 export default Resultados;
+
 

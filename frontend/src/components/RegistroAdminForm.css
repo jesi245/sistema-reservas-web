@@ -1,0 +1,60 @@
+.registro-admin {
+
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+
+}
+
+.register-link {
+    padding-top: 15px;
+    font-size: 1.5em;
+    color: #000000;
+    font-weight: bold;
+}
+
+.register-link a {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: hsla(191, 39%, 54%, 0.9);
+    color: white;
+    padding: 6rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    z-index: 2;
+    width: 90%;
+    max-width: 400px;
+}
+
+.register-box input {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: #333;
+}
+
+.register-box input::placeholder {
+    color: #888;
+}
+
+.register-box .btn {
+    width: 100%;
+    margin-top: 2rem;
+}
