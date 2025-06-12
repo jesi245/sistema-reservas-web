@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import './AdminDashBoard.css';
 import CargarHabitacion from './AdminCargarHabitacionForm';
 import { useNavigate } from 'react-router-dom';
+import { logout } from '../services/authService';
 import fotoPerfil from '../assets/img/Gong_Yoo33.webp'
 
 const AdminDashboard = () => {
@@ -18,10 +19,10 @@ const AdminDashboard = () => {
   };
 
    const cerrarSesion = () => {
-    alert('Has cerrado sesión');
+    logout();
     setVistaActiva('');
     setMenuAbierto(false);
-    navigate('/api/auth/login'); // Redirige al login
+    navigate('/api/auth/login-admin'); 
   };
 
   // Cierra el menú si se hace clic fuera de él

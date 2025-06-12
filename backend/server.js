@@ -14,6 +14,7 @@ connectDB();
 
 const authRoutes = require('./routes/auth'); 
 const reservaRoutes = require('./routes/reservasRoute');
+const adminRoutes = require('./routes/adminRoutes');
 
 
 
@@ -24,6 +25,7 @@ app.use('/api/hoteles', require('./routes/hotelesRoutes'));
 app.use('/api/auth', authRoutes);
 
 app.use('/api/reservas', reservaRoutes);
+app.use('/api/admin', adminRoutes);
 
 
 app.get('/', (req, res) => {

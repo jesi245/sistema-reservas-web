@@ -1,9 +1,14 @@
 const User = require('../models/User');
-//const bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
+
+const SALT_ROUNDS= 10;
 
 exports.registrarUsuario = async (req, res) => {
   try {
-    const { nombreHotel, nombreUsuario, password, role } = req.body;
+    let { nombreHotel, nombreUsuario, password, role } = req.body;
+
+    nombreUsuario = nombreUsuario.toLowerCase();
 
     // Validación básica
     if (!nombreHotel || !nombreUsuario || !password || !role) {
@@ -17,13 +22,13 @@ exports.registrarUsuario = async (req, res) => {
     }
 
     // Hashear contraseña
-    //const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
     // Crear nuevo usuario
     const nuevoUsuario = new User({
       nombreHotel,
       nombreUsuario,
-      password,
+      password: hashedPassword,
       role: "admin"
     });
 
@@ -37,7 +42,10 @@ exports.registrarUsuario = async (req, res) => {
 };
 
 exports.loginUsuario = async (req, res) => {
-    const { nombreUsuario, password } = req.body;
+  let { nombreUsuario, password } = req.body;
+  console.log(nombreUsuario, password)
+
+  nombreUsuario = nombreUsuario.toLowerCase();
 
   try {
     const user = await User.findOne({ nombreUsuario });
@@ -46,12 +54,25 @@ exports.loginUsuario = async (req, res) => {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    if (user.password !== password) {
+    const passwordValida = await bcrypt.compare(password, user.password);
+    if (!passwordValida) {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
 
+    // Crear token JWT
+    const token = jwt.sign(
+      {
+        id: user._id,
+        nombreUsuario: user.nombreUsuario,
+        role: user.role
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || '1d' }
+    );
+
     res.status(200).json({
       message: 'Login exitoso',
+      token, // ← lo devolvés al frontend
       user: {
         id: user._id,
         nombreUsuario: user.nombreUsuario,
@@ -60,6 +81,7 @@ exports.loginUsuario = async (req, res) => {
       }
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Error en el servidor', error });
   }
-}
+};

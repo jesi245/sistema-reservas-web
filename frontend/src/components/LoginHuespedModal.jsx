@@ -1,7 +1,10 @@
+// LoginHuespedModal.jsx
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./LoginHuespedForm.css";
 
 const LoginHuespedModal = ({ show, onClose }) => {
+  const navigate = useNavigate();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -9,7 +12,7 @@ const LoginHuespedModal = ({ show, onClose }) => {
     e.preventDefault();
     console.log("Email:", email);
     console.log("Password:", password);
-    // Aquí iría el fetch como antes.
+    // Aquí iría el login real
   };
 
   if (!show) return null;
@@ -40,7 +43,7 @@ const LoginHuespedModal = ({ show, onClose }) => {
         <input type="checkbox" id="remember" />
         <label htmlFor="remember">Recordar Contraseña</label>
         <p>¿Olvidaste tu contraseña? <a href="#">Click aquí</a></p>
-        <p>¿Aún no tienes una cuenta? <a href="#">Registrarme</a></p>
+        <p>¿Aún no tienes una cuenta? <a href="#" onClick={() => navigate("api/auth/registrar-huesped")}>Registrarme</a></p>
       </form>
     </div>
   );

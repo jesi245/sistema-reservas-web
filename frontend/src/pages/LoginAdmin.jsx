@@ -8,14 +8,25 @@ const LoginAdminPage = () => {
   const navigate = useNavigate();
 
   const handleLogin = async (formData) => {
-    try {
-      const response = await loginAdmin(formData);
-      alert('Bienvenido/a ' + response.user.nombreUsuario);
-      navigate('/admin/panel');
-    } catch (error) {
-      alert(error.response?.data?.message || 'Error en el login');
+  try {
+    const response = await loginAdmin(formData);
+    
+    // Guardar token y usuario en localStorage
+    localStorage.setItem('token', response.token);
+    localStorage.setItem('user', JSON.stringify(response.user));
+
+    alert('Bienvenido/a ' + response.user.nombreUsuario);
+
+    // Redireccionar según rol
+    if (response.user.role === 'admin') {
+      navigate('/api/admin/panel');
+    } else {
+      navigate('/huesped/reservas'); // si más adelante usás el mismo login para ambos
     }
-  };
+  } catch (error) {
+    alert(error.response?.data?.message || 'Error en el login');
+  }
+};
 
   return (
     <>
