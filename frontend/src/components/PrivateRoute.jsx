@@ -4,18 +4,24 @@ const PrivateRoute = ({ children, allowedRole }) => {
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user'));
 
-  // Sin token o sin datos del usuario → redirigir al login
+  // 🔒 Si no hay token o user en localStorage, redirigir al login adecuado
   if (!token || !user) {
-    return <Navigate to="/api/auth/login-admin" />;
+    if (allowedRole === 'admin') {
+      return <Navigate to="/api/auth/login-admin" />;
+    } else if (allowedRole === 'huesped') {
+      return <Navigate to="/" />;
+    }
+    return <Navigate to="/" />;
   }
 
-  // Si hay restricción de rol y el usuario no lo cumple → redirigir
+  // ⚠️ Si tiene token, pero no el rol correcto
   if (allowedRole && user.role !== allowedRole) {
     return <Navigate to="/unauthorized" />;
   }
 
-  // Todo OK → renderizar la ruta protegida
+  // Renderizar los hijos
   return children;
 };
 
 export default PrivateRoute;
+

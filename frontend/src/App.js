@@ -5,6 +5,7 @@ import Resultados from './pages/Resultados'; //
 import RegistroAdmin from './pages/RegistroAdmin';
 import LoginAdmin from './pages/LoginAdmin';
 import AdminDashboard from './pages/AdminDashBoard';
+import HuespedDashBoard from './pages/HuespedDashBoard'
 import Reserva from './pages/Reserva';
 import RegistroHuesped from './pages/RegistroHuesped'
 import PrivateRoute from './components/PrivateRoute';
@@ -24,6 +25,7 @@ function App() {
         <Route path="/api/admin/cargar-habitacion" element={<PrivateRoute allowedRole="admin"><AdminHotelForm /></PrivateRoute>} />
         <Route path="/api/reservas/:id" element={<Reserva />} />
         <Route path="/api/auth/registrar-huesped" element={<RegistroHuesped />} />
+        <Route path="/api/huesped/panel" element={<PrivateRoute allowedRole="huesped"><HuespedDashBoard /></PrivateRoute>} />
         <Route path="/unauthorized" element={<Unauthorized />} />
       </Routes>
     </Router>

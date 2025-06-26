@@ -18,6 +18,11 @@ export const registrarHuesped = async (datos) => {
   return response.data;
 };
 
+export const loginHuesped = async (datos) => {
+  const response = await axios.post(`${API_URL}/login-huesped`, datos)
+  return response.data
+}
+
 export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('user');

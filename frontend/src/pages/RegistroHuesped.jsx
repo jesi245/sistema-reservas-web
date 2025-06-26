@@ -1,15 +1,17 @@
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import RegistroHuespedForm from '../components/RegistroHuespedForm';
 import { registrarHuesped } from '../services/authService';
+import LoginHuespedModal from '../components/LoginHuespedModal'; // Importá el modal
+
 
 const RegistroHuespedPage = () => {
-  const navigate = useNavigate();
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   const handleRegistro = async (formulario) => {
     try {
-      await registrarHuesped(formulario);
-      alert('Huésped registrado con éxito.');
-      navigate('/api/auth/login'); // O a donde quieras redirigir
+      await registrarHuesped(formulario)
+      alert('Huésped registrado con éxito.')
+      setMostrarModal(true)
     } catch (error) {
       alert(error.response?.data?.message || 'Error al registrar huésped.');
     }
@@ -18,7 +20,11 @@ const RegistroHuespedPage = () => {
   return (
     <>
       <div className="background-image"></div>
+
       <RegistroHuespedForm onSubmit={handleRegistro} />
+
+      {/* Login Modal que se abre al registrarse */}
+      <LoginHuespedModal show={mostrarModal} onClose={() => setMostrarModal(false)} />
     </>
   );
 };

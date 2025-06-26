@@ -1,19 +1,36 @@
-// LoginHuespedModal.jsx
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginHuesped } from "../services/authService";
 import "./LoginHuespedForm.css";
 
 const LoginHuespedModal = ({ show, onClose }) => {
   const navigate = useNavigate();
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
+  const [credenciales, setCredenciales] = useState({ nombreHuesped: '', password: '' });
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Email:", email);
-    console.log("Password:", password);
-    // Aquí iría el login real
+  const handleChange = (e) => {
+    setCredenciales({ ...credenciales, [e.target.name]: e.target.value });
   };
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError('');
+
+  try {
+    const response = await loginHuesped(credenciales);
+
+    
+    localStorage.setItem('token', response.token);
+    localStorage.setItem('user', JSON.stringify(response.user));
+
+    alert('Bienvenido/a ' + response.user.nombreUsuario);
+
+    onClose();
+    navigate('/api/huesped/panel'); // o la página protegida del huésped, ej: '/api/huesped/panel'
+  } catch (err) {
+    setError(err.response?.data?.message || 'Error al iniciar sesión');
+  }
+};
 
   if (!show) return null;
 
@@ -23,27 +40,30 @@ const LoginHuespedModal = ({ show, onClose }) => {
 
       <form id="login-form" onSubmit={handleSubmit}>
         <h3>Iniciar sesión</h3>
+
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+
         <input
-          type="email"
-          name="email"
+          type="text"
+          name="nombreHuesped"
           className="box"
-          placeholder="Ingresá tu email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Ingresá tu nombre"
+          value={credenciales.nombreHuesped}
+          onChange={handleChange}
         />
         <input
           type="password"
           name="password"
           className="box"
           placeholder="Contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={credenciales.password}
+          onChange={handleChange}
         />
         <input type="submit" value="Ingresar" className="btn" />
         <input type="checkbox" id="remember" />
         <label htmlFor="remember">Recordar Contraseña</label>
         <p>¿Olvidaste tu contraseña? <a href="#">Click aquí</a></p>
-        <p>¿Aún no tienes una cuenta? <a href="#" onClick={() => navigate("api/auth/registrar-huesped")}>Registrarme</a></p>
+        <p>¿Aún no tienes una cuenta? <a href="#" onClick={() => navigate("/api/auth/registrar-huesped")}>Registrarme</a></p>
       </form>
     </div>
   );

@@ -2,6 +2,7 @@ const Huesped = require('../models/Huesped');
 const User = require('../models/User'); 
 const { generarContrasenaAleatoria } = require('../utils/funciones');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken')
 
 const SALT_ROUNDS = 10;
 
@@ -11,6 +12,7 @@ const generarUserHuesped = async (nombreUsuario) => {
     if (exists) return { success: false, message: 'Usuario existente' };
 
     const randomPassword = generarContrasenaAleatoria();
+    console.log(randomPassword)
     const hashedPassword = await bcrypt.hash(randomPassword, SALT_ROUNDS);
 
     const newUser = new User({
@@ -93,7 +95,7 @@ exports.loginHuesped = async (req, res) => {
   nombreHuesped = nombreHuesped.toLowerCase();
 
   try {
-    const user = await User.findOne({ nombreUsuario });
+    const user = await User.findOne({ nombreUsuario: nombreHuesped });
 
     if (!user) {
       return res.status(404).json({ message: 'Huésped no encontrado' });
