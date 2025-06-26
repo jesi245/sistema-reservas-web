@@ -9,9 +9,6 @@ router.get('/panel', authenticateToken, authorizeRole('admin'), (req, res) => {
   
 });
 
-// Ruta solo para huéspedes
-/*router.get('/huesped/reservas', authenticateToken, authorizeRole('huesped'), (req, res) => {
-  res.json({ message: `Reservas del huésped ${req.user.nombreUsuario}` });
-});*/
+
 
 module.exports = router;

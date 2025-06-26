@@ -72,7 +72,7 @@ exports.loginUsuario = async (req, res) => {
 
     res.status(200).json({
       message: 'Login exitoso',
-      token, // ← lo devolvés al frontend
+      token, 
       user: {
         id: user._id,
         nombreUsuario: user.nombreUsuario,

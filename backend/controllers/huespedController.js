@@ -84,3 +84,48 @@ exports.registrarHuesped = async (req, res) => {
     res.status(500).json({ mensaje: 'Error al registrar huésped' });
   }
 };
+
+
+exports.loginHuesped = async (req, res) => {
+  let { nombreHuesped, password } = req.body;
+  
+
+  nombreHuesped = nombreHuesped.toLowerCase();
+
+  try {
+    const user = await User.findOne({ nombreUsuario });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Huésped no encontrado' });
+    }
+
+    const passwordValido = await bcrypt.compare(password, user.password);
+    if (!passwordValido) {
+      return res.status(401).json({ message: 'Contraseña incorrecta' });
+    }
+
+    // Crear token JWT
+    const token = jwt.sign(
+      {
+        id: user._id,
+        nombreUsuario: user.nombreUsuario,
+        role: user.role
+      },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || '1d' }
+    );
+
+    res.status(200).json({
+      message: 'Login exitoso',
+      token, 
+      user: {
+        id: user._id,
+        nombreUsuario: user.nombreUsuario,
+        role: user.role,
+      }
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error en el servidor', error });
+  }
+};

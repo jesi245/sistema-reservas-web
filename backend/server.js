@@ -12,9 +12,10 @@ app.use(express.json());
 
 connectDB();
 
-const authRoutes = require('./routes/auth'); 
+const authRoutes = require('./routes/authRoutes'); 
 const reservaRoutes = require('./routes/reservasRoute');
 const adminRoutes = require('./routes/adminRoutes');
+const huespedRoutes = require('./routes/huespedRoutes')
 
 
 
@@ -26,6 +27,7 @@ app.use('/api/auth', authRoutes);
 
 app.use('/api/reservas', reservaRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('api/huesped', huespedRoutes)
 
 
 app.get('/', (req, res) => {
