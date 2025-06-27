@@ -2,46 +2,35 @@ import { useEffect, useRef, useState } from 'react';
 import './AdminDashBoard.css';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../services/authService';
-import fotoPerfil from '../assets/img/Gong_Yoo33.webp'
+import fotoPerfil from '../assets/img/Gong_Yoo33.webp';
 
-const AdminDashboard = () => {
+const HuespedDashboard = () => {
   const [vistaActiva, setVistaActiva] = useState('');
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [huesped, setHuesped] = useState(null);
 
   const menuRef = useRef(null);
   const contenidoRef = useRef(null);
   const menuBtnRef = useRef(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const storedHuesped = JSON.parse(localStorage.getItem('huesped'));
+    if (storedHuesped) {
+      setHuesped(storedHuesped);
+    }
+  }, []);
+
   const toggleMenu = () => {
     setMenuAbierto(prev => !prev);
   };
 
-   const cerrarSesion = () => {
+  const cerrarSesion = () => {
     logout();
     setVistaActiva('');
     setMenuAbierto(false);
-    navigate('/'); 
+    navigate('/');
   };
-
-  // Cierra el menú si se hace clic fuera de él
-  useEffect(() => {
-    const manejarClickFuera = (event) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target) &&
-        menuBtnRef.current &&
-        event.target !== menuBtnRef.current
-      ) {
-        setMenuAbierto(false);
-      }
-    };
-
-    document.addEventListener('click', manejarClickFuera);
-    return () => {
-      document.removeEventListener('click', manejarClickFuera);
-    };
-  }, []);
 
   const renderContenido = () => {
     switch (vistaActiva) {
@@ -67,14 +56,26 @@ const AdminDashboard = () => {
       >
         <div className="menu-header">
           <img src={fotoPerfil} alt="Foto de perfil" className="foto-perfil" />
-          <h2>Bienvenido</h2>
+          <h2>
+            {huesped ? `¡Bienvenido, ${huesped.nombreHuesped}!` : '¡Bienvenido!'}
+          </h2>
         </div>
         <div className="menu-items">
-          <button onClick={() => setVistaActiva('checkin')}><i className="fa fa-check"></i> Mi Perfil</button>
-          <button onClick={() => setVistaActiva('disponibilidad')}><i className="fa fa-bed"></i> Mis Reservas</button>
-          <button onClick={() => setVistaActiva('ocupadas')}><i className="fa fa-door-closed"></i> Check-in</button>
-          <button onClick={() => setVistaActiva('cargar')}><i className="fa fa-plus"></i> Encuesta</button>
-          <button onClick={cerrarSesion}><i className="fa fa-sign-out-alt"></i> Cerrar Sesión</button>
+          <button onClick={() => setVistaActiva('checkin')}>
+            <i className="fa fa-check"></i> Mi Perfil
+          </button>
+          <button onClick={() => setVistaActiva('disponibilidad')}>
+            <i className="fa fa-bed"></i> Mis Reservas
+          </button>
+          <button onClick={() => setVistaActiva('ocupadas')}>
+            <i className="fa fa-door-closed"></i> Check-in
+          </button>
+          <button onClick={() => setVistaActiva('cargar')}>
+            <i className="fa fa-plus"></i> Encuesta
+          </button>
+          <button onClick={cerrarSesion}>
+            <i className="fa fa-sign-out-alt"></i> Cerrar Sesión
+          </button>
         </div>
       </div>
 
@@ -92,4 +93,4 @@ const AdminDashboard = () => {
   );
 };
 
-export default AdminDashboard;
+export default HuespedDashboard;

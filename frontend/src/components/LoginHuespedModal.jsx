@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { loginHuesped } from "../services/authService";
 import "./LoginHuespedForm.css";
 
-const LoginHuespedModal = ({ show, onClose }) => {
+const LoginHuespedModal = ({ show, onClose, onLoginSuccess }) => {
   const navigate = useNavigate();
   const [credenciales, setCredenciales] = useState({ nombreHuesped: '', password: '' });
   const [error, setError] = useState('');
@@ -19,14 +19,22 @@ const LoginHuespedModal = ({ show, onClose }) => {
   try {
     const response = await loginHuesped(credenciales);
 
-    
     localStorage.setItem('token', response.token);
     localStorage.setItem('user', JSON.stringify(response.user));
+    localStorage.setItem('huesped', JSON.stringify(response.huesped));
 
-    alert('Bienvenido/a ' + response.user.nombreUsuario);
+    alert('Bienvenido/a ' + response.huesped.nombreHuesped);
 
     onClose();
-    navigate('/api/huesped/panel'); // o la página protegida del huésped, ej: '/api/huesped/panel'
+
+    // ✅ Si hay una redirección personalizada, se ejecuta
+    if (onLoginSuccess) {
+      onLoginSuccess();
+    } else {
+      // ✅ Flujo normal
+      navigate('/api/huesped/panel');
+    }
+
   } catch (err) {
     setError(err.response?.data?.message || 'Error al iniciar sesión');
   }

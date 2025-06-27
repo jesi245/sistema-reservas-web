@@ -90,7 +90,6 @@ exports.registrarHuesped = async (req, res) => {
 
 exports.loginHuesped = async (req, res) => {
   let { nombreHuesped, password } = req.body;
-  
 
   nombreHuesped = nombreHuesped.toLowerCase();
 
@@ -106,12 +105,19 @@ exports.loginHuesped = async (req, res) => {
       return res.status(401).json({ message: 'Contraseña incorrecta' });
     }
 
+    // Buscar datos extendidos del huésped
+    const huesped = await Huesped.findOne({ email: nombreHuesped });
+
+    if (!huesped) {
+      return res.status(404).json({ message: 'Datos del huésped no encontrados' });
+    }
+
     // Crear token JWT
     const token = jwt.sign(
       {
         id: user._id,
         nombreUsuario: user.nombreUsuario,
-        role: user.role
+        role: user.role,
       },
       process.env.JWT_SECRET,
       { expiresIn: process.env.JWT_EXPIRES_IN || '1d' }
@@ -119,12 +125,13 @@ exports.loginHuesped = async (req, res) => {
 
     res.status(200).json({
       message: 'Login exitoso',
-      token, 
+      token,
       user: {
         id: user._id,
         nombreUsuario: user.nombreUsuario,
         role: user.role,
-      }
+      },
+      huesped,
     });
   } catch (error) {
     console.error(error);
