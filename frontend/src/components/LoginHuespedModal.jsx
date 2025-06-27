@@ -2,11 +2,27 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginHuesped } from "../services/authService";
 import "./LoginHuespedForm.css";
+import { useEffect } from "react";
+import RecuperarPassword from "./RecuperacionPassword";
 
 const LoginHuespedModal = ({ show, onClose, onLoginSuccess }) => {
   const navigate = useNavigate();
-  const [credenciales, setCredenciales] = useState({ nombreHuesped: '', password: '' });
+  const [credenciales, setCredenciales] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const [rememberMe, setRememberMe] = useState(false);
+  const [showRecovery, setShowRecovery] = useState(false);
+
+  useEffect(() => {
+    const savedCreds = JSON.parse(localStorage.getItem('rememberedCreds'));
+      if (savedCreds) {
+        setCredenciales(savedCreds);
+        setRememberMe(true);
+      }
+  }, []);
+
+  const handleRememberChange = (e) => {
+    setRememberMe(e.target.checked);
+  };
 
   const handleChange = (e) => {
     setCredenciales({ ...credenciales, [e.target.name]: e.target.value });
@@ -23,15 +39,19 @@ const LoginHuespedModal = ({ show, onClose, onLoginSuccess }) => {
     localStorage.setItem('user', JSON.stringify(response.user));
     localStorage.setItem('huesped', JSON.stringify(response.huesped));
 
-    alert('Bienvenido/a ' + response.huesped.nombreHuesped);
+    // Guardar o limpiar credenciales
+    if (rememberMe) {
+      localStorage.setItem('rememberedCreds', JSON.stringify(credenciales));
+    } else {
+      localStorage.removeItem('rememberedCreds');
+    }
 
+    alert('Bienvenido/a ' + response.huesped.nombreHuesped);
     onClose();
 
-    // ✅ Si hay una redirección personalizada, se ejecuta
     if (onLoginSuccess) {
       onLoginSuccess();
     } else {
-      // ✅ Flujo normal
       navigate('/api/huesped/panel');
     }
 
@@ -40,7 +60,13 @@ const LoginHuespedModal = ({ show, onClose, onLoginSuccess }) => {
   }
 };
 
+
   if (!show) return null;
+
+  if (showRecovery) {
+  return <RecuperarPassword onBack={() => setShowRecovery(false)} />;
+}
+
 
   return (
     <div className="login-form-container active">
@@ -53,10 +79,10 @@ const LoginHuespedModal = ({ show, onClose, onLoginSuccess }) => {
 
         <input
           type="text"
-          name="nombreHuesped"
+          name="email"
           className="box"
-          placeholder="Ingresá tu nombre"
-          value={credenciales.nombreHuesped}
+          placeholder="Ingresá tu email"
+          value={credenciales.email}
           onChange={handleChange}
         />
         <input
@@ -68,9 +94,20 @@ const LoginHuespedModal = ({ show, onClose, onLoginSuccess }) => {
           onChange={handleChange}
         />
         <input type="submit" value="Ingresar" className="btn" />
-        <input type="checkbox" id="remember" />
-        <label htmlFor="remember">Recordar Contraseña</label>
-        <p>¿Olvidaste tu contraseña? <a href="#">Click aquí</a></p>
+        <div style={{ marginTop: '1rem' }}>
+          <input
+          type="checkbox"
+          id="remember"
+          checked={rememberMe}
+          onChange={handleRememberChange}
+        />
+        <label htmlFor="remember">Recordar contraseña</label>
+        </div>
+
+        <p>
+          ¿Olvidaste tu contraseña?{' '}
+          <a href="#" onClick={() => setShowRecovery(true)}>Click aquí</a>
+        </p>
         <p>¿Aún no tienes una cuenta? <a href="#" onClick={() => navigate("/api/auth/registrar-huesped")}>Registrarme</a></p>
       </form>
     </div>

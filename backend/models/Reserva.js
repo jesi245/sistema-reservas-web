@@ -21,11 +21,7 @@ const reservaSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Hotel',
     required: true
-  },
-  fechaCreacion: {
-    type: Date,
-    default: Date.now
   }
-});
+}, {timestamps: true});
 
 module.exports = mongoose.model('Reserva', reservaSchema);

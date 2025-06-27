@@ -28,7 +28,9 @@ const Home = () => {
   };
 
   const handleLogout = () => {
-    localStorage.clear();
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('huesped');
     setHuesped(null);
     window.location.reload();
   };

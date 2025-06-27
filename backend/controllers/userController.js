@@ -1,6 +1,7 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
+const { enviarMailRecuperacion } = require('../utils/emailService')
 
 const SALT_ROUNDS= 10;
 
@@ -83,5 +84,29 @@ exports.loginUsuario = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error en el servidor', error });
+  }
+};
+
+exports.recuperarPassword = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ nombreUsuario: email });
+    if (!user) {
+      return res.status(404).json({ message: 'No existe un usuario con ese correo' });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    const link = `${process.env.FRONTEND_URL}/reset-password/${token}`;
+
+    await enviarMailRecuperacion({
+      to: email,
+      nombre: user.nombreUsuario,
+      link,
+    });
+
+    res.json({ message: 'Te enviamos un link para recuperar tu contraseña' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error al procesar la solicitud' });
   }
 };

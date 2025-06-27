@@ -1,0 +1,96 @@
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: process.env.MAIL_USER,
+    pass: process.env.MAIL_PASSWORD
+  }
+});
+
+const enviarBienvenida = async ({ to, nombre, usuario, password }) => {
+  try {
+    const mailOptions = {
+      from: '"KJ Web" <' + process.env.MAIL_USER + '>',
+      to,
+      subject: '¡Bienvenido a KJ Web!',
+      html: `
+        <h2>¡Hola ${nombre}!</h2>
+        <p>Gracias por registrarte en nuestro sitio.</p>
+        <p><strong>Usuario:</strong> ${usuario}</p>
+        <p><strong>Contraseña:</strong> ${password}</p>
+        <p>Ya podés iniciar sesión y comenzar a disfrutar de nuestros servicios.</p>
+        <br/>
+        <p>Saludos,</p>
+        <p><em>Equipo de KJ Web</em></p>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    console.log(mailOptions)
+    
+    return { success: true };
+  } catch (error) {
+    console.error('Error al enviar mail de bienvenida:', error);
+    return { success: false, error };
+  }
+};
+
+const enviarConfirmacionReserva = async ({ to, nombre, hotel, fechaEntrada, fechaSalida }) => {
+  try {
+    const mailOptions = {
+      from: `"KJ Web" <${process.env.MAIL_USER}>`,
+      to,
+      subject: 'Confirmación de Reserva - KJ Web',
+      html: `
+        <h2>¡Hola ${nombre}!</h2>
+        <p>Tu reserva ha sido confirmada exitosamente.</p>
+        <p><strong>Hotel:</strong> ${hotel}</p>
+        <p><strong>Fecha de entrada:</strong> ${new Date(fechaEntrada).toLocaleDateString()}</p>
+        <p><strong>Fecha de salida:</strong> ${new Date(fechaSalida).toLocaleDateString()}</p>
+        <br/>
+        <p>Te esperamos y gracias por confiar en KJ Web.</p>
+        <p><em>Equipo de KJ Web</em></p>
+      `
+    };
+
+    await transporter.sendMail(mailOptions);
+    return { success: true };
+  } catch (error) {
+    console.error('Error al enviar email de confirmación de reserva:', error);
+    return { success: false, error };
+  }
+};
+
+const enviarMailRecuperacion = async ({ to, nombre, link }) => {
+    try {
+  const mailOptions = {
+    from: `"KJ Web" <${process.env.MAIL_USER}>`,
+    to,
+    subject: 'Recuperación de contraseña',
+    html: `
+      <h2>Hola ${nombre}</h2>
+      <p>Solicitaste restablecer tu contraseña. Hacé clic en este enlace para crear una nueva:</p>
+      <p><a href="${link}">${link}</a></p>
+      <p>Este enlace expirará en 1 hora.</p>
+      <br/>
+      <p>Saludos,</p>
+      <p><em>El equipo de KJ Web</em></p>
+    `
+  };
+
+  console.log(mailOptions)
+
+  await transporter.sendMail(mailOptions);
+  return { success: true };
+  } catch (error) {
+    console.error('Error al enviar mail de recuperación:', error);
+    return { success: false, error };
+  }
+};
+
+
+
+module.exports = { enviarBienvenida, enviarConfirmacionReserva, enviarMailRecuperacion };
+

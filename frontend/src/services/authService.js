@@ -26,4 +26,10 @@ export const loginHuesped = async (datos) => {
 export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('user');
+  localStorage.removeItem('huesped');
+};
+
+export const enviarLinkRecuperacion = async ({ email }) => {
+  const response = await axios.post(`${API_URL}/recuperar-password`, { email });
+  return response.data;
 };

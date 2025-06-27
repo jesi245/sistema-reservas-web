@@ -27,7 +27,7 @@ app.use('/api/auth', authRoutes);
 
 app.use('/api/reservas', reservaRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('api/huesped', huespedRoutes)
+app.use('/api/huesped', huespedRoutes)
 
 
 app.get('/', (req, res) => {

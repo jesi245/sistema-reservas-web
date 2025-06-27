@@ -3,6 +3,7 @@ const User = require('../models/User');
 const { generarContrasenaAleatoria } = require('../utils/funciones');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken')
+const { enviarBienvenida } = require('../utils/emailService');
 
 const SALT_ROUNDS = 10;
 
@@ -79,6 +80,18 @@ exports.registrarHuesped = async (req, res) => {
       return res.status(500).json({ mensaje: 'Error al generar el usuario del huésped' });
     }
 
+    const resultadoMail = await enviarBienvenida({
+      to: nuevoHuesped.email,
+      nombre: `${nuevoHuesped.nombreHuesped} ${nuevoHuesped.apellidoHuesped}`,
+      usuario: nuevoHuesped.email,
+      password: resultado.password 
+    });
+
+    if(!resultadoMail.success) {
+      console.log('No llegó')
+      return res.status(500).json({ mensaje: 'Error al generar mail'})
+    }
+
     res.status(201).json({ mensaje: `Huésped registrado con éxito, ${resultado.password}`, passwordGenerada: resultado.password });
 
   } catch (error) {
@@ -89,12 +102,12 @@ exports.registrarHuesped = async (req, res) => {
 
 
 exports.loginHuesped = async (req, res) => {
-  let { nombreHuesped, password } = req.body;
+  let { email, password } = req.body;
 
-  nombreHuesped = nombreHuesped.toLowerCase();
+  nombreHuesped = email.toLowerCase();
 
   try {
-    const user = await User.findOne({ nombreUsuario: nombreHuesped });
+    const user = await User.findOne({ nombreUsuario: email });
 
     if (!user) {
       return res.status(404).json({ message: 'Huésped no encontrado' });
