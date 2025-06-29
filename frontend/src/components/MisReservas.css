@@ -1,0 +1,150 @@
+.mis-reservas-container {
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.titulo-seccion {
+  font-size: 2rem;
+  color: var(--color-principal);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.reservas-lista {
+  display: grid;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.card-reserva {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  border-radius: 10px;
+  background-color: #f9f9f9;
+  transition: box-shadow 0.3s ease;
+}
+
+.card-reserva:hover {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+}
+
+.nuevas-busquedas {
+  margin-top: 3rem;
+  text-align: center;
+}
+
+.recomendaciones {
+  margin-top: 3rem;
+}
+
+.recomendaciones-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.reco-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  overflow: hidden;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.reco-img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.reco-info {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.reco-info h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.reco-info p {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.reco-info button {
+  margin-top: auto;
+  background-color: var(--color-principal);
+  color: white;
+  padding: 0.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.reco-info button:hover {
+  background-color: #0077cc;
+}
+
+.form-busqueda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.form-busqueda input,
+.form-busqueda select {
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex: 1 1 200px;
+}
+
+.form-busqueda button {
+  padding: 0.5rem 1.2rem;
+  background-color: var(--color-principal, #007bff);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  margin-top: 10px;
+  padding: 6px 12px;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #e60000;
+}
+
+.btn-checkin {
+  background-color: #4caf50;
+  color: white;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+.checkin-realizado {
+  color: green;
+  font-weight: bold;
+  margin-top: 8px;
+}

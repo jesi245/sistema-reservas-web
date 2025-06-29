@@ -33,3 +33,8 @@ export const enviarLinkRecuperacion = async ({ email }) => {
   const response = await axios.post(`${API_URL}/recuperar-password`, { email });
   return response.data;
 };
+
+export const resetearPassword = async ({ token, nuevaPassword }) => {
+  const response = await axios.post(`${API_URL}/reset-password`, { token, nuevaPassword });
+  return response.data;
+};

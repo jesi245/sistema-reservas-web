@@ -151,3 +151,24 @@ exports.loginHuesped = async (req, res) => {
     res.status(500).json({ message: 'Error en el servidor', error });
   }
 };
+
+exports.actualizarHuesped = async (req, res) => {
+  const { id } = req.params;
+  const nuevosDatos = req.body;
+
+  try {
+    const huespedActualizado = await Huesped.findByIdAndUpdate(id, nuevosDatos, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!huespedActualizado) {
+      return res.status(404).json({ message: 'Huésped no encontrado' });
+    }
+
+    res.json({ message: 'Perfil actualizado correctamente', huesped: huespedActualizado });
+  } catch (error) {
+    console.error('Error al actualizar huésped:', error);
+    res.status(500).json({ message: 'Error al actualizar los datos del huésped' });
+  }
+};

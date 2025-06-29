@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom';
+import { resetearPassword } from '../services/authService'
 
-import axios from 'axios';
 
 const ResetPassword = () => {
   const location = useLocation();
@@ -20,7 +20,7 @@ const ResetPassword = () => {
     setMensaje('');
 
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/reset-password', { token, nuevaPassword: password });
+      const response = await resetearPassword({ token, nuevaPassword: password })
       setMensaje(response.data.message);
       setTimeout(() => navigate('/'), 3000); // Redirige después de 3 seg
     } catch (err) {

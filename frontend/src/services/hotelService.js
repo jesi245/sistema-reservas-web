@@ -17,3 +17,7 @@ export const obtenerHotelPorId = async (id) => {
   return response.data;
 };
 
+export const getHotelesRecomendados = async () => {
+  const response = await axios.get('http://localhost:5000/api/hoteles/recomendaciones');
+  return response.data;
+};

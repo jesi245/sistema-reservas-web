@@ -21,6 +21,10 @@ const reservaSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Hotel',
     required: true
+  },
+  checkInRealizado: {
+    type: Boolean,
+    default: false
   }
 }, {timestamps: true});
 

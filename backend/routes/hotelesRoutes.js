@@ -3,7 +3,8 @@ const router = express.Router();
 const {
   buscarHoteles,
   crearHotel,
-  obtenerHotelPorId
+  obtenerHotelPorId,
+  obtenerHotelesRecomendados
 } = require('../controllers/hotelController');
 
 // Ruta para búsqueda de hoteles (huésped)
@@ -11,6 +12,8 @@ router.post('/buscar', buscarHoteles);
 
 // Ruta para registrar un nuevo hotel (administrador)
 router.post('/admin', crearHotel);
+
+router.get('/recomendaciones', obtenerHotelesRecomendados);
 
 // Ruta para obtener un hotel por ID
 router.get('/:id', obtenerHotelPorId);

@@ -48,9 +48,20 @@ const obtenerHotelPorId = async (req, res) => {
   }
 };
 
+const obtenerHotelesRecomendados = async (req, res) => {
+  try {
+    const hoteles = await Hotel.aggregate([{ $sample: { size: 3 } }]);
+    res.json(hoteles);
+  } catch (error) {
+    console.error('Error al obtener recomendaciones:', error);
+    res.status(500).json({ message: 'Error al obtener recomendaciones' });
+  }
+};
+
 
 module.exports = {
   buscarHoteles,
   crearHotel,
-  obtenerHotelPorId
+  obtenerHotelPorId,
+  obtenerHotelesRecomendados
 };

@@ -13,7 +13,7 @@ app.use(express.json());
 connectDB();
 
 const authRoutes = require('./routes/authRoutes'); 
-const reservaRoutes = require('./routes/reservasRoute');
+const reservaRoutes = require('./routes/reservasRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const huespedRoutes = require('./routes/huespedRoutes')
 

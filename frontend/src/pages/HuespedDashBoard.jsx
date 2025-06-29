@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import './AdminDashBoard.css';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../services/authService';
 import fotoPerfil from '../assets/img/Gong_Yoo33.webp';
+import PerfilHuesped from '../components/PerfilHuesped'
+import MisReservas from '../components/MisReservas';
+import './AdminDashBoard.css';
+
 
 const HuespedDashboard = () => {
   const [vistaActiva, setVistaActiva] = useState('');
@@ -34,10 +37,10 @@ const HuespedDashboard = () => {
 
   const renderContenido = () => {
     switch (vistaActiva) {
-      case 'cargar':
-        return <p>Sección (por implementar)</p>;
-      case 'checkin':
-        return <p>Sección de Check-In (por implementar)</p>;
+      case 'mi-perfil':
+        return <PerfilHuesped/>;
+      case 'mis-reservas':
+        return <MisReservas/>;
       case 'disponibilidad':
         return <p>Sección de Disponibilidad (por implementar)</p>;
       case 'ocupadas':
@@ -61,10 +64,10 @@ const HuespedDashboard = () => {
           </h2>
         </div>
         <div className="menu-items">
-          <button onClick={() => setVistaActiva('checkin')}>
+          <button onClick={() => setVistaActiva('mi-perfil')}>
             <i className="fa fa-check"></i> Mi Perfil
           </button>
-          <button onClick={() => setVistaActiva('disponibilidad')}>
+          <button onClick={() => setVistaActiva('mis-reservas')}>
             <i className="fa fa-bed"></i> Mis Reservas
           </button>
           <button onClick={() => setVistaActiva('ocupadas')}>
