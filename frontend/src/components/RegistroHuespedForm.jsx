@@ -49,7 +49,7 @@ const RegistroHuespedForm = ({ onSubmit }) => {
       <i className="fas fa-times" id="register-close"></i>
 
       <form onSubmit={handleSubmit} className="registro-form">
-        <h3>Registro del huésped</h3>
+        
 
         <input
           type="text"
@@ -175,7 +175,7 @@ const RegistroHuespedForm = ({ onSubmit }) => {
           required
         />
 
-        <input type="submit" value="Registrarme" className="btn" />
+        <input type="submit" value="REGISTRARME" className="btn" />
       </form>
     </div>
   );

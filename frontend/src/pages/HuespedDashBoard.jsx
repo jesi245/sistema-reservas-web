@@ -70,12 +70,12 @@ const HuespedDashboard = () => {
           <button onClick={() => setVistaActiva('mis-reservas')}>
             <i className="fa fa-bed"></i> Mis Reservas
           </button>
-          <button onClick={() => setVistaActiva('ocupadas')}>
+          {/*<button onClick={() => setVistaActiva('ocupadas')}>
             <i className="fa fa-door-closed"></i> Check-in
           </button>
           <button onClick={() => setVistaActiva('cargar')}>
             <i className="fa fa-plus"></i> Encuesta
-          </button>
+          </button>*/}
           <button onClick={cerrarSesion}>
             <i className="fa fa-sign-out-alt"></i> Cerrar Sesión
           </button>

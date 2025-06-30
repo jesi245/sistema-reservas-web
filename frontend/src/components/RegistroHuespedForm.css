@@ -36,3 +36,14 @@
     border: .1rem solid rgba(28, 206, 222, 0.988);
     text-transform: none;
 }
+
+.registro-form label {
+    text-align: right;
+    font-size: 1.6rem;
+    
+}
+
+.registro-form .btn {
+    font-weight: bold;
+    
+}

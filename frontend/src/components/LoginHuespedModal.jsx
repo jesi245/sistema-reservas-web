@@ -46,7 +46,6 @@ const LoginHuespedModal = ({ show, onClose, onLoginSuccess }) => {
       localStorage.removeItem('rememberedCreds');
     }
 
-    alert('Bienvenido/a ' + response.huesped.nombreHuesped);
     onClose();
 
     if (onLoginSuccess) {

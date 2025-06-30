@@ -1,19 +1,32 @@
 import { useState } from 'react';
 import RegistroHuespedForm from '../components/RegistroHuespedForm';
 import { registrarHuesped } from '../services/authService';
-import LoginHuespedModal from '../components/LoginHuespedModal'; // Importá el modal
-
+import LoginHuespedModal from '../components/LoginHuespedModal';
+import MensajeModal from '../components/MensajeModal';
 
 const RegistroHuespedPage = () => {
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [modalMensaje, setModalMensaje] = useState('');
+  const [esExito, setEsExito] = useState(false);
+  const [mostrarLogin, setMostrarLogin] = useState(false);
 
   const handleRegistro = async (formulario) => {
     try {
-      await registrarHuesped(formulario)
-      alert('Huésped registrado con éxito.')
-      setMostrarModal(true)
+      await registrarHuesped(formulario);
+      setModalMensaje('Huésped registrado con éxito.');
+      setEsExito(true);
+      setMostrarModal(true);
     } catch (error) {
-      alert(error.response?.data?.message || 'Error al registrar huésped.');
+      setModalMensaje(error.response?.data?.message || 'Error al registrar huésped.');
+      setEsExito(false);
+      setMostrarModal(true);
+    }
+  };
+
+  const handleCerrarMensaje = () => {
+    setMostrarModal(false);
+    if (esExito) {
+      setMostrarLogin(true);
     }
   };
 
@@ -23,8 +36,16 @@ const RegistroHuespedPage = () => {
 
       <RegistroHuespedForm onSubmit={handleRegistro} />
 
-      {/* Login Modal que se abre al registrarse */}
-      <LoginHuespedModal show={mostrarModal} onClose={() => setMostrarModal(false)} />
+      <MensajeModal
+        show={mostrarModal}
+        mensaje={modalMensaje}
+        onClose={handleCerrarMensaje}
+      />
+
+      <LoginHuespedModal
+        show={mostrarLogin}
+        onClose={() => setMostrarLogin(false)}
+      />
     </>
   );
 };

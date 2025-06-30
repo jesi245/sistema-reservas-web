@@ -125,7 +125,7 @@ const Reserva = () => {
             <p><strong>Entrada:</strong> {resumenReserva.fechaEntrada}</p>
             <p><strong>Salida:</strong> {resumenReserva.fechaSalida}</p>
             <p><strong>Precio por noche:</strong> ${resumenReserva.precio}</p>
-            <button onClick={() => navigate('/huesped/panel')}>
+            <button onClick={() => navigate('/api/huesped/panel')}>
               Ir a mi panel
             </button>
           </div>

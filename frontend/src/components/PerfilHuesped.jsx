@@ -39,7 +39,7 @@ const PerfilHuesped = () => {
         localStorage.setItem('huesped', JSON.stringify(res.huesped));
         setHuesped(res.huesped);
         setEditandoCampo(null);
-        alert('Perfil actualizado con éxito');
+        
     } catch (error) {
         console.error('Error al guardar cambios:', error);
         alert('❌ Ocurrió un error al actualizar los datos');

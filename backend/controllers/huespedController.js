@@ -88,8 +88,7 @@ exports.registrarHuesped = async (req, res) => {
     });
 
     if(!resultadoMail.success) {
-      console.log('No llegó')
-      return res.status(500).json({ mensaje: 'Error al generar mail'})
+        return res.status(500).json({ mensaje: 'Error al generar mail'})
     }
 
     res.status(201).json({ mensaje: `Huésped registrado con éxito, ${resultado.password}`, passwordGenerada: resultado.password });

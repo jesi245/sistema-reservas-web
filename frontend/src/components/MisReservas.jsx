@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getReservasByEmail, cancelarReserva, checkInReserva } from '../services/reservaService';
 import { getHotelesRecomendados } from '../services/hotelService';
 import { useNavigate } from 'react-router-dom';
+import MensajeModal from '../components/MensajeModal';
 import './MisReservas.css';
 
 const MisReservas = () => {
@@ -16,6 +17,22 @@ const MisReservas = () => {
 
   const huesped = JSON.parse(localStorage.getItem('huesped'));
   const navigate = useNavigate();
+
+  // Estado para modales
+  const [modal, setModal] = useState({
+    show: false,
+    mensaje: '',
+    esConfirmacion: false,
+    onConfirm: null
+  });
+
+  const mostrarModal = (mensaje, esConfirmacion = false, onConfirm = null) => {
+    setModal({ show: true, mensaje, esConfirmacion, onConfirm });
+  };
+
+  const cerrarModal = () => {
+    setModal({ show: false, mensaje: '', esConfirmacion: false, onConfirm: null });
+  };
 
   // Obtener reservas activas
   useEffect(() => {
@@ -56,37 +73,35 @@ const MisReservas = () => {
     navigate(`/resultados?${queryParams}`);
   };
 
-  const handleCancelarReserva = async (reservaId) => {
-    const confirmar = window.confirm('¿Estás seguro de cancelar esta reserva?');
-    if (!confirmar) return;
-
-    try {
-      await cancelarReserva(reservaId);
-      alert('Reserva cancelada correctamente. Se envió un email de confirmación.');
-      setReservas(reservas.filter(r => r._id !== reservaId));
-    } catch (error) {
-      console.error('Error al cancelar la reserva:', error);
-      alert('Ocurrió un error al intentar cancelar.');
-    }
+  const confirmarCancelarReserva = (reservaId) => {
+    mostrarModal('¿Estás seguro de cancelar esta reserva?', true, async () => {
+      try {
+        await cancelarReserva(reservaId);
+        cerrarModal();
+        mostrarModal('Reserva cancelada correctamente. Se envió un email de confirmación.');
+        setReservas(reservas.filter(r => r._id !== reservaId));
+      } catch (error) {
+        cerrarModal();
+        console.error('Error al cancelar la reserva:', error);
+        mostrarModal('Ocurrió un error al intentar cancelar.');
+      }
+    });
   };
 
-  const handleCheckIn = async (reservaId) => {
-  const confirmar = window.confirm('¿Estás seguro de realizar el check-in?');
-
-  if (!confirmar) return;
-
-  try {
-    await checkInReserva(reservaId);
-    alert('Check-in realizado correctamente. Se envió un email de confirmación.');
-
-    // Actualizar reservas localmente
-    setReservas(reservas.map(r => r._id === reservaId ? { ...r, checkInRealizado: true } : r));
-  } catch (error) {
-    console.error('Error al realizar check-in:', error);
-    alert('Ocurrió un error al intentar hacer el check-in.');
-  }
+  const confirmarCheckIn = (reservaId) => {
+    mostrarModal('¿Estás seguro de realizar el check-in?', true, async () => {
+      try {
+        await checkInReserva(reservaId);
+        cerrarModal();
+        mostrarModal('Check-in realizado correctamente. Se envió un email de confirmación.');
+        setReservas(reservas.map(r => r._id === reservaId ? { ...r, checkInRealizado: true } : r));
+      } catch (error) {
+        cerrarModal();
+        console.error('Error al realizar check-in:', error);
+        mostrarModal('Ocurrió un error al intentar hacer el check-in.');
+      }
+    });
   };
-
 
   if (!huesped) return <p>Iniciá sesión para ver tus reservas.</p>;
 
@@ -105,19 +120,16 @@ const MisReservas = () => {
               <p><strong>Ciudad:</strong> {reserva.hotelId?.ciudad}</p>
               <p><strong>Precio:</strong> ${reserva.hotelId?.precioPorNoche}</p>
               {!reserva.checkInRealizado && (
-                <button
-                  className="btn-cancelar"
-                  onClick={() => cancelarReserva(reserva._id)}
-                >
-                  Cancelar
+                <button className="btn-cancelar" onClick={() => confirmarCancelarReserva(reserva._id)}>
+                  CANCELAR
                 </button>
               )}
               {!reserva.checkInRealizado ? (
-                <button className="btn-checkin" onClick={() => handleCheckIn(reserva._id)}>
-                  Realizar Check-in
+                <button className="btn-checkin" onClick={() => confirmarCheckIn(reserva._id)}>
+                  REALIZAR CHECK-IN
                 </button>
               ) : (
-                <p className="checkin-realizado">✅ Check-in realizado</p>
+                <p className="checkin-realizado">✅ CHECK-IN REALIZADO</p>
               )}
             </div>
           ))}
@@ -125,7 +137,7 @@ const MisReservas = () => {
       )}
 
       <section className="nuevas-busquedas">
-        <h2>¿Buscás algo nuevo?</h2>
+        <h2 className='titulo-seccion'>¿Buscás algo nuevo?</h2>
         <form className="form-busqueda" onSubmit={handleSubmit}>
           <input
             type="text"
@@ -140,24 +152,12 @@ const MisReservas = () => {
             <option value="hostel">Hostel</option>
             <option value="cabaña">Cabaña</option>
           </select>
-          <input
-            type="date"
-            name="fechaEntrada"
-            value={busqueda.fechaEntrada}
-            onChange={handleChange}
-          />
-          <input
-            type="date"
-            name="fechaSalida"
-            value={busqueda.fechaSalida}
-            onChange={handleChange}
-          />
-          <button type="submit">Buscar</button>
+          <button type="submit">BUSCAR</button>
         </form>
       </section>
 
       <section className="recomendaciones">
-        <h2>También te pueden interesar</h2>
+        <h2 className='titulo-seccion'>También te pueden interesar</h2>
         <div className="recomendaciones-grid">
           {recomendaciones.map((hotel) => (
             <div key={hotel._id} className="reco-card">
@@ -170,12 +170,20 @@ const MisReservas = () => {
                 <h3>{hotel.nombre}</h3>
                 <p>{hotel.descripcion || 'Sin descripción disponible'}</p>
                 <p><strong>Precio por noche:</strong> ${hotel.precioPorNoche}</p>
-                <button onClick={() => navigate(`/api/reservas/${hotel._id}`)}>Reservar</button>
+                <button onClick={() => navigate(`/api/reservas/${hotel._id}`)}>RESERVAR</button>
               </div>
             </div>
           ))}
         </div>
       </section>
+
+      <MensajeModal
+        show={modal.show}
+        mensaje={modal.mensaje}
+        esConfirmacion={modal.esConfirmacion}
+        onConfirm={modal.onConfirm}
+        onClose={cerrarModal}
+      />
     </section>
   );
 };
