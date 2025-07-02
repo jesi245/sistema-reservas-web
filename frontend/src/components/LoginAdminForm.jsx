@@ -31,7 +31,7 @@ const LoginForm = ({ onSubmit }) => {
       />
       <button className='btn' type="submit">Iniciar sesión</button>
       <p class="register-link">
-        ¿Eres nuevo? <a href="registrar">Regístrate aquí</a>
+        ¿Eres nuevo? <a href="/api/auth/registrar-admin">Regístrate aquí</a>
     </p>
     </form>
     </section>

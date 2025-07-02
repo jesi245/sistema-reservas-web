@@ -27,7 +27,7 @@
 
 .modal-contenido button {
   padding: 10px 20px;
-  
+  background-color: #1dc6c3; /* Asegura que tenga fondo visible */
   color: white;
   border: none;
   border-radius: 6px;

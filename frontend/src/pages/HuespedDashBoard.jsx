@@ -46,7 +46,7 @@ const HuespedDashboard = () => {
       case 'ocupadas':
         return <p>Sección de Ocupadas (por implementar)</p>;
       default:
-        return <p>Selecciona una opción del menú</p>;
+        return <p className=' mensaje-inicial'>Selecciona una opción del menú</p>;
     }
   };
 

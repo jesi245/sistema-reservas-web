@@ -25,15 +25,13 @@ app.use('/api/hoteles', require('./routes/hotelesRoutes'));
 // ✅ Ruta de autenticación
 app.use('/api/auth', authRoutes);
 
-app.use('/api/reservas', reservaRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/huesped', huespedRoutes)
+app.use('/api/reservas', reservaRoutes); 
 
-
-app.get('/', (req, res) => {
-  res.send('API del sistema de reservas funcionando 🚀');
-});
+app.use('/api/admin', adminRoutes);       // 👈 importante agregar
+app.use('/api/huesped', huespedRoutes);   // 👈 importante agregar
+app.use('/api/hotel-info', require ('./routes/hotelInfoRoutes'));
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor backend corriendo en http://localhost:${PORT}`);
 });
+

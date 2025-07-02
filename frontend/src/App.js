@@ -11,6 +11,8 @@ import RegistroHuesped from './pages/RegistroHuesped'
 import PrivateRoute from './components/PrivateRoute';
 import ResetPassword from './pages/ResetPassword';
 import Unauthorized from './pages/Unauthorized';
+import HotelInfoPage from './pages/HotelInfoPage';
+
 
 import './App.css';
 
@@ -31,6 +33,9 @@ function App() {
         
         <Route path="/api/auth/reset-password/:token" element={<ResetPassword />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="/api/admin/hotel-info" element={<HotelInfoPage />} />
+      
+
       </Routes>
     </Router>
   );

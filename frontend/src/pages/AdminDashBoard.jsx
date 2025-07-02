@@ -1,13 +1,19 @@
 import { useEffect, useRef, useState } from 'react';
 import './AdminDashBoard.css';
 import CargarHabitacion from './AdminCargarHabitacionForm';
+import HotelInfoForm from '../components/HotelInfoForm';
+import HotelInfoView from '../components/HotelInfoView';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../services/authService';
-import fotoPerfil from '../assets/img/Gong_Yoo33.webp'
+import fotoPerfil from '../assets/img/Gong_Yoo33.webp';
+import axios from 'axios';
 
 const AdminDashboard = () => {
   const [vistaActiva, setVistaActiva] = useState('');
   const [menuAbierto, setMenuAbierto] = useState(false);
+  const [hotelInfo, setHotelInfo] = useState(null);
+  const [modoEdicion, setModoEdicion] = useState(false);
+  const [errorCarga, setErrorCarga] = useState(null);
 
   const menuRef = useRef(null);
   const contenidoRef = useRef(null);
@@ -18,31 +24,85 @@ const AdminDashboard = () => {
     setMenuAbierto(prev => !prev);
   };
 
-   const cerrarSesion = () => {
+  const cerrarSesion = () => {
     logout();
     setVistaActiva('');
     setMenuAbierto(false);
-    navigate('/api/auth/login-admin'); 
+    navigate('/api/auth/login-admin');
   };
 
-  // Cierra el menú si se hace clic fuera de él
+  // 🔄 Cargar info del hotel al montar el componente
   useEffect(() => {
-    const manejarClickFuera = (event) => {
-      if (
-        menuRef.current &&
-        !menuRef.current.contains(event.target) &&
-        menuBtnRef.current &&
-        event.target !== menuBtnRef.current
-      ) {
-        setMenuAbierto(false);
+    const fetchHotelInfo = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get('http://localhost:5000/api/hotel-info', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (res.data) {
+          setHotelInfo(res.data); // 👈 res.data es un objeto único
+        } else {
+          setHotelInfo(null);
+        }
+        setErrorCarga(null);
+      } catch (err) {
+        console.error(err);
+        setErrorCarga('Error al cargar la información del hotel');
       }
     };
 
-    document.addEventListener('click', manejarClickFuera);
-    return () => {
-      document.removeEventListener('click', manejarClickFuera);
-    };
+    fetchHotelInfo();
   }, []);
+
+  const abrirPerfilHotel = () => {
+    setVistaActiva('perfil');
+    setModoEdicion(!hotelInfo); // Si no hay info → edición
+  };
+
+  const guardarInfoHotel = async (info) => {
+    try {
+      const token = localStorage.getItem('token');
+
+      if (hotelInfo?._id) {
+        // 🔁 Actualizar si ya existe
+        const res = await axios.put(
+          `http://localhost:5000/api/hotel-info/actualizar/${hotelInfo._id}`,
+          info,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setHotelInfo(res.data.data);
+      } else {
+        // 🆕 Crear si no hay
+        const res = await axios.post(
+          'http://localhost:5000/api/hotel-info/crear',
+          info,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setHotelInfo(res.data.data || info);
+      }
+
+      setModoEdicion(false);
+      setVistaActiva('perfil');
+    } catch (error) {
+      console.error("❌ Error al guardar o actualizar info del hotel:", error);
+      alert("Error al guardar la información del hotel");
+    }
+  };
+
+  const editarInfoHotel = () => {
+    setModoEdicion(true);
+  };
 
   const renderContenido = () => {
     switch (vistaActiva) {
@@ -54,8 +114,26 @@ const AdminDashboard = () => {
         return <p>Sección de Disponibilidad (por implementar)</p>;
       case 'ocupadas':
         return <p>Sección de Ocupadas (por implementar)</p>;
+      case 'perfil':
+        return modoEdicion ? (
+          <HotelInfoForm
+            infoInicial={hotelInfo}
+            onSubmit={guardarInfoHotel}
+            onCancelar={() => setModoEdicion(false)}
+          />
+        ) : (
+          <HotelInfoView info={hotelInfo} onEditar={editarInfoHotel} />
+        );
+      case 'precios':
+        return <p>Motor de Precios Dinámicos (por implementar)</p>;
+      case 'encuestas':
+        return <p>Gestión de Encuestas de Satisfacción (por implementar)</p>;
       default:
-        return <p>Selecciona una opción del menú</p>;
+        return errorCarga ? (
+          <p className="error">{errorCarga}</p>
+        ) : (
+          <p className='mensaje-bienvenida'>Selecciona una opción del menú</p>
+        );
     }
   };
 
@@ -71,10 +149,13 @@ const AdminDashboard = () => {
           <h2>Bienvenido</h2>
         </div>
         <div className="menu-items">
+          <button onClick={abrirPerfilHotel}><i className="fa fa-user"></i> Perfil del Hotel</button>
           <button onClick={() => setVistaActiva('checkin')}><i className="fa fa-check"></i> Ver Check-In Realizados</button>
           <button onClick={() => setVistaActiva('disponibilidad')}><i className="fa fa-bed"></i> Disponibilidad de Habitaciones</button>
           <button onClick={() => setVistaActiva('ocupadas')}><i className="fa fa-door-closed"></i> Habitaciones Ocupadas</button>
           <button onClick={() => setVistaActiva('cargar')}><i className="fa fa-plus"></i> Cargar Nueva Habitación</button>
+          <button onClick={() => setVistaActiva('precios')}><i className="fa fa-dollar-sign"></i> Motor de Precios Dinámicos</button>
+          <button onClick={() => setVistaActiva('encuestas')}><i className="fa fa-envelope"></i> Encuestas de Satisfacción</button>
           <button onClick={cerrarSesion}><i className="fa fa-sign-out-alt"></i> Cerrar Sesión</button>
         </div>
       </div>
@@ -94,3 +175,4 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+

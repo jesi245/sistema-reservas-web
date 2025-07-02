@@ -9,7 +9,7 @@ const RegistroAdminPage = () => {
     try {
       const data = await registrarAdmin(formData);
       alert('Administrador registrado con éxito!');
-      navigate('/api/auth/login');
+      navigate('/api/auth/login-admin');
     } catch (error) {
       alert(error.response?.data?.message || 'Error en el registro');
     }
