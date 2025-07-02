@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import './RegistroAdminForm.css'
 
 const RegistroAdminForm = ({ onSubmit }) => {
@@ -32,12 +33,11 @@ const RegistroAdminForm = ({ onSubmit }) => {
 
         <button className='btn' type="submit">Registrarse</button>
         
-        <p class="register-link">
-        ¿Ya tienes cuenta? <a href="login" >Iniciar sesión</a>
-    </p>
+        <p className="register-link">
+          ¿Ya tienes cuenta? <Link to="/api/auth/login-admin">Iniciar sesión</Link>
+        </p>
       </form>
     </section>
-    
   );
 };
 

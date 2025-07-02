@@ -1,18 +1,20 @@
 const nodemailer = require('nodemailer');
-const Huesped = require('../models/Huesped')
+const Huesped = require('../models/Huesped');
 
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp-relay.brevo.com',
+  port: 587,
+  secure: false, // TLS
   auth: {
-    user: process.env.MAIL_USER,
-    pass: process.env.MAIL_PASSWORD
+    user: process.env.MAIL_USER,      // ejemplo: 910672001@smtp-brevo.com
+    pass: process.env.MAIL_PASSWORD   // la contraseña que te dio Brevo
   }
 });
 
 const enviarBienvenida = async ({ to, nombre, usuario, password }) => {
   try {
     const mailOptions = {
-      from: '"KJ Web" <' + process.env.MAIL_USER + '>',
+      from: `"KJ Web" <kjreservas@gmail.com>`,
       to,
       subject: '¡Bienvenido a KJ Web!',
       html: `
@@ -28,9 +30,6 @@ const enviarBienvenida = async ({ to, nombre, usuario, password }) => {
     };
 
     await transporter.sendMail(mailOptions);
-
-    console.log(mailOptions)
-    
     return { success: true };
   } catch (error) {
     console.error('Error al enviar mail de bienvenida:', error);
@@ -41,7 +40,7 @@ const enviarBienvenida = async ({ to, nombre, usuario, password }) => {
 const enviarConfirmacionReserva = async ({ to, nombre, hotel, fechaEntrada, fechaSalida }) => {
   try {
     const mailOptions = {
-      from: `"KJ Web" <${process.env.MAIL_USER}>`,
+      from: `"KJ Web" <kjreservas@gmail.com>`,
       to,
       subject: 'Confirmación de Reserva - KJ Web',
       html: `
@@ -65,40 +64,38 @@ const enviarConfirmacionReserva = async ({ to, nombre, hotel, fechaEntrada, fech
 };
 
 const enviarMailRecuperacion = async ({ to, nombre, link }) => {
-    try {
-      
-      let nombreHuesped = ''
-      const huesped = await Huesped.findOne({'email': nombre})
-      if(huesped) nombreHuesped = huesped.nombreHuesped
-      const mailOptions = {
-        from: `"KJ Web" <${process.env.MAIL_USER}>`,
-        to,
-        subject: 'Recuperación de contraseña',
-        html: `
-          <h2>Hola ${nombreHuesped}</h2>
-          <p>Solicitaste restablecer tu contraseña. Hacé clic en este enlace para crear una nueva:</p>
-          <p><a href="${link}">${link}</a></p>
-          <p>Este enlace expirará en 1 hora.</p>
-          <br/>
-          <p>Saludos,</p>
-          <p><em>El equipo de KJ Web</em></p>
-        `
-      };
+  try {
+    let nombreHuesped = '';
+    const huesped = await Huesped.findOne({ email: nombre });
+    if (huesped) nombreHuesped = huesped.nombreHuesped;
 
- 
+    const mailOptions = {
+      from: `"KJ Web" <kjreservas@gmail.com>`,
+      to,
+      subject: 'Recuperación de contraseña',
+      html: `
+        <h2>Hola ${nombreHuesped}</h2>
+        <p>Solicitaste restablecer tu contraseña. Hacé clic en este enlace para crear una nueva:</p>
+        <p><a href="${link}">${link}</a></p>
+        <p>Este enlace expirará en 1 hora.</p>
+        <br/>
+        <p>Saludos,</p>
+        <p><em>El equipo de KJ Web</em></p>
+      `
+    };
 
-      await transporter.sendMail(mailOptions);
-      return { success: true };
-      } catch (error) {
-        console.error('Error al enviar mail de recuperación:', error);
-        return { success: false, error };
-      }
+    await transporter.sendMail(mailOptions);
+    return { success: true };
+  } catch (error) {
+    console.error('Error al enviar mail de recuperación:', error);
+    return { success: false, error };
+  }
 };
 
 const enviarConfirmacionCancelacion = async ({ to, nombre, hotel, fechaEntrada, fechaSalida }) => {
   try {
     const mailOptions = {
-      from: `"KJ Web" <${process.env.MAIL_USER}>`,
+      from: `"KJ Web" <kjreservas@gmail.com>`,
       to,
       subject: 'Cancelación de Reserva - KJ Web',
       html: `
@@ -124,7 +121,7 @@ const enviarConfirmacionCancelacion = async ({ to, nombre, hotel, fechaEntrada, 
 const enviarMailCheckIn = async ({ to, nombre, hotel, fechaEntrada }) => {
   try {
     const mailOptions = {
-      from: `"KJ Web" <${process.env.MAIL_USER}>`,
+      from: `"KJ Web" <kjreservas@gmail.com>`,
       to,
       subject: 'Check-in realizado - KJ Web',
       html: `
@@ -144,6 +141,12 @@ const enviarMailCheckIn = async ({ to, nombre, hotel, fechaEntrada }) => {
   }
 };
 
+module.exports = {
+  enviarBienvenida,
+  enviarConfirmacionReserva,
+  enviarMailRecuperacion,
+  enviarConfirmacionCancelacion,
+  enviarMailCheckIn
+};
 
-module.exports = { enviarBienvenida, enviarConfirmacionReserva, enviarMailRecuperacion, enviarConfirmacionCancelacion, enviarMailCheckIn };
 
