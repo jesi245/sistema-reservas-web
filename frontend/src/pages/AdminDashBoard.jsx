@@ -10,6 +10,9 @@ import axios from 'axios';
 import ReservasActuales from '../components/ReservasActuales';
 import CheckInsRealizados from '../components/CheckInsRealizados';
 import HabitacionesDisponibles from '../components/HabitacionesDisponibles';
+import EncuestaSatisfaccion from '../components/EncuestaSatisfaccion';
+import PreciosDinamicos from '../components/PreciosDinamicos';
+
 
 const AdminDashboard = () => {
   const [vistaActiva, setVistaActiva] = useState('');
@@ -131,9 +134,9 @@ const AdminDashboard = () => {
           <HotelInfoView info={hotelInfo} onEditar={editarInfoHotel} />
         );
       case 'precios':
-        return <p>Motor de Precios Dinámicos (por implementar)</p>;
+        return <PreciosDinamicos/>;
       case 'encuestas':
-        return <p>Gestión de Encuestas de Satisfacción (por implementar)</p>;
+        return <EncuestaSatisfaccion/>;
       default:
         return errorCarga ? (
           <p className="error">{errorCarga}</p>
@@ -182,4 +185,5 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+
 

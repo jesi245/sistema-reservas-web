@@ -54,3 +54,146 @@
   font-weight: bold;
   margin-bottom: 20px;
 }
+.encuesta-links {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.link-grande {
+  display: inline-block;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #1a3c6c;
+  background-color: #e0ecff;
+  padding: 12px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  margin: 10px 0;
+  transition: background-color 0.3s ease;
+}
+
+.link-grande:hover {
+  background-color: #c1d8ff;
+}
+.encuesta-satisfaccion-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.encuesta-satisfaccion-container h2 {
+  font-size: 32px;
+  color: #1a3c6c;
+  margin-bottom: 1rem;
+}
+
+.encuesta-satisfaccion-container h3 {
+  font-size: 24px;
+  color: #1a3c6c;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.encuesta-satisfaccion-container p {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.success-message {
+  color: #2e7d32;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  font-size: 18px;
+}
+
+.error-message {
+  color: #c62828;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  font-size: 18px;
+}
+
+.tabla-huespedes {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.tabla-huespedes th,
+.tabla-huespedes td {
+  padding: 12px 16px;
+  border: 1px solid #ccc;
+  text-align: left;
+  font-size: 16px;
+}
+
+.tabla-huespedes th {
+  background-color: #1a3c6c;
+  color: white;
+}
+
+.btn-enviar-encuesta {
+  padding: 8px 14px;
+  background-color: #1a3c6c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s ease;
+}
+
+.btn-enviar-encuesta:hover {
+  background-color: #174070;
+}
+/* Ajustes para Precios Dinámicos */
+.precios-dinamicos-container {
+  padding: 25px;
+  font-size: 1.1rem; /* texto un poco más grande */
+  color: #f0f0f0; /* texto más oscuro */
+}
+
+.tabla-reglas {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 1.1rem;
+  color: #222; /* texto en tabla un poco más oscuro */
+}
+
+.tabla-reglas th,
+.tabla-reglas td {
+  border: 1px solid #bbb;
+  padding: 12px 15px;
+  text-align: center;
+  background-color: #fff;
+}
+
+.tabla-reglas th {
+  background-color: #007bff; /* azul fuerte */
+  color: #fff; /* texto blanco */
+  font-weight: 600;
+}
+
+.tabla-reglas tbody tr:hover {
+  background-color: #e9f1ff; /* un celeste suave al pasar el mouse */
+}
+
+.boton-activar {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.boton-activar:hover {
+  background-color: #0056b3;
+}
