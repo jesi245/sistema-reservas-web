@@ -22,10 +22,16 @@ const reservaSchema = new mongoose.Schema({
     ref: 'Hotel',
     required: true
   },
+  hotelInfoId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'HotelInfo',
+    required: true,
+  },
   checkInRealizado: {
     type: Boolean,
     default: false
   }
-}, {timestamps: true});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Reserva', reservaSchema);
+

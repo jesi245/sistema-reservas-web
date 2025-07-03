@@ -23,6 +23,8 @@ const AdminHotelForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+   const admin = JSON.parse(localStorage.getItem('user'));
+
     // Convertir servicios y fotos de string a array
     const dataToSend = {
       ...hotel,
@@ -32,7 +34,7 @@ const AdminHotelForm = () => {
 
     try {
       await registrarHotel(dataToSend);
-      alert('Hotel creado correctamente ✅');
+      alert('Habitación creada correctamente ✅');
 
       // Limpiar el formulario
       setHotel({
@@ -45,8 +47,8 @@ const AdminHotelForm = () => {
         precioPorNoche: '', // Limpiar el campo de precio por noche
       });
     } catch (error) {
-      console.error('Error al crear hotel:', error);
-      alert('❌ Ocurrió un error al crear el hotel');
+      console.error('Error al crear la habitación:', error);
+      alert('❌ Ocurrió un error al crear la habitación');
     }
   };
 

@@ -7,6 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import { logout } from '../services/authService';
 import fotoPerfil from '../assets/img/Gong_Yoo33.webp';
 import axios from 'axios';
+import ReservasActuales from '../components/ReservasActuales';
+import CheckInsRealizados from '../components/CheckInsRealizados';
+import HabitacionesDisponibles from '../components/HabitacionesDisponibles';
 
 const AdminDashboard = () => {
   const [vistaActiva, setVistaActiva] = useState('');
@@ -65,10 +68,11 @@ const AdminDashboard = () => {
   const guardarInfoHotel = async (info) => {
     try {
       const token = localStorage.getItem('token');
+      let res;
 
       if (hotelInfo?._id) {
         // 🔁 Actualizar si ya existe
-        const res = await axios.put(
+        res = await axios.put(
           `http://localhost:5000/api/hotel-info/actualizar/${hotelInfo._id}`,
           info,
           {
@@ -80,7 +84,7 @@ const AdminDashboard = () => {
         setHotelInfo(res.data.data);
       } else {
         // 🆕 Crear si no hay
-        const res = await axios.post(
+        res = await axios.post(
           'http://localhost:5000/api/hotel-info/crear',
           info,
           {
@@ -108,10 +112,12 @@ const AdminDashboard = () => {
     switch (vistaActiva) {
       case 'cargar':
         return <CargarHabitacion />;
-      case 'checkin':
-        return <p>Sección de Check-In (por implementar)</p>;
+      case 'reservas':
+        return <ReservasActuales />;
+      case 'checkins':
+        return <CheckInsRealizados />;
       case 'disponibilidad':
-        return <p>Sección de Disponibilidad (por implementar)</p>;
+        return <HabitacionesDisponibles/>;
       case 'ocupadas':
         return <p>Sección de Ocupadas (por implementar)</p>;
       case 'perfil':
@@ -150,10 +156,11 @@ const AdminDashboard = () => {
         </div>
         <div className="menu-items">
           <button onClick={abrirPerfilHotel}><i className="fa fa-user"></i> Perfil del Hotel</button>
-          <button onClick={() => setVistaActiva('checkin')}><i className="fa fa-check"></i> Ver Check-In Realizados</button>
-          <button onClick={() => setVistaActiva('disponibilidad')}><i className="fa fa-bed"></i> Disponibilidad de Habitaciones</button>
-          <button onClick={() => setVistaActiva('ocupadas')}><i className="fa fa-door-closed"></i> Habitaciones Ocupadas</button>
-          <button onClick={() => setVistaActiva('cargar')}><i className="fa fa-plus"></i> Cargar Nueva Habitación</button>
+          <button onClick={() => setVistaActiva('reservas')}><i className="fa fa-calendar-check"></i> Ver Reservas Actuales</button>
+          <button onClick={() => setVistaActiva('checkins')}><i className="fa fa-check"></i> Ver Check-In Realizados</button>
+          {/*<button onClick={() => setVistaActiva('disponibilidad')}><i className="fa fa-bed"></i> Disponibilidad de Habitaciones</button>*/}
+          {/*<button onClick={() => setVistaActiva('ocupadas')}><i className="fa fa-door-closed"></i> Habitaciones Ocupadas</button>*/}
+         <button onClick={() => setVistaActiva('cargar')}><i className="fa fa-plus"></i> Cargar Nueva Habitación</button>
           <button onClick={() => setVistaActiva('precios')}><i className="fa fa-dollar-sign"></i> Motor de Precios Dinámicos</button>
           <button onClick={() => setVistaActiva('encuestas')}><i className="fa fa-envelope"></i> Encuestas de Satisfacción</button>
           <button onClick={cerrarSesion}><i className="fa fa-sign-out-alt"></i> Cerrar Sesión</button>
