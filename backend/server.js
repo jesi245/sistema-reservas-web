@@ -16,6 +16,7 @@ const authRoutes = require('./routes/authRoutes');
 const reservaRoutes = require('./routes/reservasRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const huespedRoutes = require('./routes/huespedRoutes')
+const reservasAdminRoutes = require('./routes/reservasAdminRoutes');
 
 
 
@@ -27,9 +28,11 @@ app.use('/api/auth', authRoutes);
 
 app.use('/api/reservas', reservaRoutes); 
 
-app.use('/api/admin', adminRoutes);       // 👈 importante agregar
-app.use('/api/huesped', huespedRoutes);   // 👈 importante agregar
+app.use('/api/admin', adminRoutes);       
+app.use('/api/huesped', huespedRoutes);   
 app.use('/api/hotel-info', require ('./routes/hotelInfoRoutes'));
+app.use('/api/admin/reservas', reservasAdminRoutes);
+app.use('/api/admin/disponibles', require('./routes/disponibilidadAdminRoutes'));
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor backend corriendo en http://localhost:${PORT}`);

@@ -8,12 +8,14 @@ const hotelSchema = new mongoose.Schema({
   precioPorNoche: { type: Number, required: true },
   servicios: [{ type: String }], // ej: wifi, desayuno, pileta
   fotos: [{ type: String }], // URLs o rutas a imágenes
+
   disponibilidad: [
     {
       desde: Date,
       hasta: Date
     }
   ],
+
   habitaciones: [
     {
       numero: Number,
@@ -24,7 +26,14 @@ const hotelSchema = new mongoose.Schema({
         }
       ]
     }
-  ]
+  ],
+
+  // 🔗 Referencia al hotel cargado por el administrador
+  hotelInfoId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'HotelInfo',
+    required: true
+  }
 });
 
 module.exports = mongoose.model('Hotel', hotelSchema);

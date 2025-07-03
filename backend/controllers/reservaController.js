@@ -1,18 +1,33 @@
 const Reserva = require('../models/Reserva');
-const Hotel = require('../models/Hotel')
-const { enviarConfirmacionReserva, enviarConfirmacionCancelacion, enviarMailCheckIn } = require('../utils/emailService');
+const Hotel = require('../models/Hotel');
+const HotelInfo = require('../models/HotelInfo');
 
+const {
+  enviarConfirmacionReserva,
+  enviarConfirmacionCancelacion,
+  enviarMailCheckIn
+} = require('../utils/emailService');
+
+// 🟢 Crear una nueva reserva
 exports.crearReserva = async (req, res) => {
   try {
     const { hotelId, fechaEntrada, fechaSalida, nombre, email } = req.body;
 
+    // Buscar el hotel por ID
     const hotel = await Hotel.findById(hotelId);
     if (!hotel) {
       return res.status(404).json({ mensaje: 'Hotel no encontrado' });
     }
 
+    // Buscar el HotelInfo que coincida por nombre del hotel
+    const hotelInfo = await HotelInfo.findOne({ nombreHotel: hotel.nombre });
+    if (!hotelInfo) {
+      return res.status(404).json({ mensaje: 'No se encontró información del hotel para asociar la reserva' });
+    }
+
     const nuevaReserva = new Reserva({
       hotelId,
+      hotelInfoId: hotelInfo._id,
       nombre,
       email,
       fechaEntrada,
@@ -21,7 +36,7 @@ exports.crearReserva = async (req, res) => {
 
     await nuevaReserva.save();
 
-    // 🔔 Enviar mail de confirmación
+    // Enviar mail al huésped
     const resultadoMail = await enviarConfirmacionReserva({
       to: email,
       nombre,
@@ -36,11 +51,12 @@ exports.crearReserva = async (req, res) => {
 
     res.status(201).json({ mensaje: 'Reserva realizada con éxito', reserva: nuevaReserva });
   } catch (error) {
-    console.error('Error al realizar la reserva:', error);
+    console.error('❌ Error al realizar la reserva:', error);
     res.status(500).json({ mensaje: 'Error al realizar la reserva' });
   }
 };
 
+// 🔍 Obtener TODAS las reservas (admin general)
 exports.obtenerReservas = async (req, res) => {
   try {
     const reservas = await Reserva.find().populate('hotelId', 'nombre');
@@ -51,6 +67,7 @@ exports.obtenerReservas = async (req, res) => {
   }
 };
 
+// 🔍 Obtener reservas por huésped
 exports.obtenerReservasPorHuesped = async (req, res) => {
   const { email } = req.params;
 
@@ -63,10 +80,13 @@ exports.obtenerReservasPorHuesped = async (req, res) => {
   }
 };
 
+// ❌ Cancelar una reserva
 exports.eliminarReserva = async (req, res) => {
   try {
     const reserva = await Reserva.findById(req.params.id).populate('hotelId');
-    if (!reserva) return res.status(404).json({ mensaje: 'Reserva no encontrada' });
+    if (!reserva) {
+      return res.status(404).json({ mensaje: 'Reserva no encontrada' });
+    }
 
     await Reserva.findByIdAndDelete(req.params.id);
 
@@ -85,8 +105,7 @@ exports.eliminarReserva = async (req, res) => {
   }
 };
 
-
-
+// ✅ Realizar Check-In
 exports.realizarCheckIn = async (req, res) => {
   try {
     const reserva = await Reserva.findById(req.params.id).populate('hotelId');
@@ -101,8 +120,7 @@ exports.realizarCheckIn = async (req, res) => {
 
     reserva.checkInRealizado = true;
     await reserva.save();
-
-    // Enviar mail al huésped
+    
     await enviarMailCheckIn({
       to: reserva.email,
       nombre: reserva.nombre,

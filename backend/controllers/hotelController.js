@@ -1,4 +1,5 @@
 const Hotel = require('../models/Hotel');
+const HotelInfo = require('../models/HotelInfo');
 
 // 🔍 Buscar hoteles (para el módulo de filtro)
 const buscarHoteles = async (req, res) => {
@@ -10,27 +11,40 @@ const buscarHoteles = async (req, res) => {
       tipo: tipo
     });
 
-    console.log(hoteles)
+    console.log(hoteles);
     console.log("Filtros recibidos", req.body);
 
-    // 🔄 Simulación de filtro por disponibilidad (por ahora sin lógica real)
-    const disponibles = hoteles.filter(hotel => true);
-
+    const disponibles = hoteles.filter(hotel => true); // Simulación
     res.json(disponibles);
   } catch (error) {
     res.status(500).json({ mensaje: 'Error al buscar hoteles', error });
   }
 };
 
-// 🆕 Crear hotel (módulo administrador)
+// 🆕 Crear habitación (módulo administrador)
 const crearHotel = async (req, res) => {
   try {
-    const nuevoHotel = new Hotel(req.body);
+    const usuarioId = req.user.id;
+    if (!req.user || !req.user.id) {
+  return res.status(401).json({ mensaje: 'Token inválido o no enviado' });
+}
+
+    // Buscar el HotelInfo del admin
+    const hotelInfo = await HotelInfo.findOne({ usuarioId });
+    if (!hotelInfo) {
+      return res.status(404).json({ message: 'No se encontró información del hotel para este administrador.' });
+    }
+
+    const nuevoHotel = new Hotel({
+      ...req.body,
+      hotelInfoId: hotelInfo._id
+    });
+
     const hotelGuardado = await nuevoHotel.save();
     res.status(201).json(hotelGuardado);
   } catch (error) {
-    console.error('Error al crear hotel:', error);
-    res.status(500).json({ message: 'Error al crear hotel' });
+    console.error('Error al crear habitación:', error);
+    res.status(500).json({ message: 'Error al crear la habitación' });
   }
 };
 
@@ -57,8 +71,6 @@ const obtenerHotelesRecomendados = async (req, res) => {
     res.status(500).json({ message: 'Error al obtener recomendaciones' });
   }
 };
-
-
 module.exports = {
   buscarHoteles,
   crearHotel,
