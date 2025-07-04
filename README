@@ -1,10 +1,11 @@
 # Sistema de Reservas Web - KJ Web
 
-Este proyecto es un sistema completo de reservas online para pequeños y medianos hoteles de Argentina.
+Este proyecto es un sistema completo de reservas online para pequeños y medianos hoteles y alojamientos de Argentina.
 
 ## Objetivo del Proyecto
 
-La plataforma permite a usuarios (huéspedes) buscar, reservar y gestionar habitaciones de hoteles, y a los administradores de hoteles gestionar la información del establecimiento, cargar las habitaciones,ver las reservas y más.
+La plataforma permite a usuarios (huéspedes) buscar, reservar y gestionar habitaciones de hoteles, y a administradores de hoteles gestionar la información del establecimiento, habitaciones, reservas y más.
+
 
 ## Funcionalidades para el Usuario (Huésped)
 
@@ -14,7 +15,7 @@ La plataforma permite a usuarios (huéspedes) buscar, reservar y gestionar habit
 - Realización de reservas.
 - Recepción de emails automáticos de confirmación de reserva y cancelación.
 - Gestión de reservas personales desde el panel de usuario.
-- Funcionalidad de **Check-In digital** desde el panel.
+- Funcionalidad de Check-In digital desde el panel.
 - Recepción de email al realizar el check-in.
 - Visualización de recomendaciones personalizadas.
 
