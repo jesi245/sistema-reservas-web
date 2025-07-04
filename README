@@ -1,0 +1,42 @@
+# Sistema de Reservas Web - KJ Web
+
+Este proyecto es un sistema completo de reservas online para pequeños y medianos hoteles y alojamientos de Argentina.
+
+## Objetivo del Proyecto
+
+La plataforma permite a usuarios (huéspedes) buscar, reservar y gestionar habitaciones de hoteles, y a administradores de hoteles gestionar la información del establecimiento, habitaciones, reservas y más.
+
+## Funcionalidades para el Usuario (Huésped)
+
+- Registro e inicio de sesión.
+- Búsqueda de alojamientos por ciudad, tipo, fecha de entrada/salida.
+- Visualización de habitaciones disponibles con fotos y servicios.
+- Realización de reservas.
+- Recepción de emails automáticos de confirmación de reserva y cancelación.
+- Gestión de reservas personales desde el panel de usuario.
+- Funcionalidad de Check-In digital desde el panel.
+- Recepción de email al realizar el check-in.
+- Visualización de recomendaciones personalizadas.
+
+
+## Funcionalidades para el Administrador
+
+- Registro de administrador e inicio de sesión seguro.
+- Panel de administración con acceso a:
+  - **Perfil del hotel:** cargar/editar información como nombre, ciudad, cantidad de habitaciones, servicios, etc.
+  - **Gestión de habitaciones:** cargar nuevas habitaciones con fotos y precios.
+  - **Ver reservas actuales:** listado de reservas realizadas en su hotel.
+  - **Ver check-ins realizados:** listado de reservas con check-in confirmado.
+  - **Motor de precios dinámicos:** reglas por demanda y temporada
+  - **Gestión de encuestas de satisfacción** (envío de formularios vía email).
+
+## Tecnologías Utilizadas
+
+- **Frontend:** React, CSS, Js.
+- **Backend:** Node.js, Express, MongoDB (Mongoose).
+- **Autenticación:** JWT.
+- **Emails:** Nodemailer (usando Brevo como servicio SMTP).
+
+## Aclaración importante sobre el archivo `.env`
+Este proyecto incluye el archivo `.env` con claves y configuraciones necesarias para ejecutar y evaluar el sistema completo.  
+Sabemos que por buenas prácticas no debería subirse este archivo ya que contiene información sensible, como credenciales de email y claves de conexión. Sin embargo, en este caso lo incluimos únicamente para facilitar la revisión y visualización del funcionamiento total del sistema.
